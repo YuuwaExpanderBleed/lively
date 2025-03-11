@@ -364,8 +364,9 @@ namespace Lively.Player.CefSharp
                 else if (StreamUtil.TryParseYouTubeVideoIdFromUrl(path, ref tmp))
                 {
                     pageType = WebPageType.yt;
-                    path = "https://www.youtube.com/embed/" + tmp +
-                        "?version=3&rel=0&autoplay=1&loop=1&controls=0&playlist=" + tmp;
+                    // path = "https://www.youtube.com/embed/" + tmp +
+                    //     "?version=3&rel=0&autoplay=1&loop=1&controls=0&playlist=" + tmp;
+                    path = "https://www.youtube.com/watch/" + tmp
                 }
                 else
                     pageType = WebPageType.online;
@@ -385,6 +386,13 @@ namespace Lively.Player.CefSharp
                         Cef.Initialize(settings);
                         chromeBrowser = new ChromiumWebBrowser(string.Empty);
                         chromeBrowser.Load(path);
+                        
+                        KeyEvent k = new KeyEvent();
+                        k.WindowsKeyCode = 0x46;
+                        k.FocusOnEditableField = true;
+                        k.IsSystemKey = false;
+                        k.Type = KeyEventType.Char;
+                        chromeBrowser.GetHost().SendKeyEvent(k);
                     }
                     break;
                 case WebPageType.local:
